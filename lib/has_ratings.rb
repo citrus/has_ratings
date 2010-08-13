@@ -71,7 +71,7 @@ module SimplesIdeias
       
         def find_rating_by_user(owner)
           owner = owner.id if owner.is_a?(User)
-          self.ratings.where:user_id => owner).first
+          self.ratings.where(:user_id => owner).first
         end
       
         def rating!
