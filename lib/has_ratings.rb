@@ -51,15 +51,16 @@ module SimplesIdeias
           include SimplesIdeias::Ratings::ActiveRecord::InstanceMethods
         
           self.has_rating_options = {
-            :type => ::ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s
+            :type => ::ActiveRecord::Base.send(:class_of_active_record_descendant, self).to_s
           }
         
           # associations
           has_many :ratings, :as => :rateable, :dependent => :destroy
         
           # named scopes
-          named_scope :best_rated, :order => 'rating desc'
-          named_scope :most_rated, :order => 'ratings_count desc'
+          scope :best_rated, :order => 'rating desc'
+          scope :most_rated, :order => 'ratings_count desc'
+          
         end
       end
     
@@ -70,7 +71,7 @@ module SimplesIdeias
       
         def find_rating_by_user(owner)
           owner = owner.id if owner.is_a?(User)
-          self.ratings.find(:first, :conditions => {:user_id => owner})
+          self.ratings.where:user_id => owner).first
         end
       
         def rating!
