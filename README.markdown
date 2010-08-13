@@ -1,12 +1,21 @@
-has_ratings
+has_ratings (for rails3)
 ===========
 
-Instalation
------------
 
-1) Install the plugin with `script/plugin install git://github.com/fnando/has_ratings.git`
+Note:
+------------
 
-2) Generate a migration with `script/generate migration create_ratings` and add the following code:
+Forked from http://github.com/fnando/has_ratings. 
+
+Work in Progress! This has not fully been tested. 
+
+
+Installation
+------------
+
+1) Install the plugin with `rails plugin install git://github.com/citrus/has_ratings.git`
+
+2) Generate a migration with `rails generate migration create_ratings` and add the following code:
 
 	class CreateRatings < ActiveRecord::Migration
 	  def self.up
@@ -27,18 +36,20 @@ Instalation
 	  end
 	end
 
-3) Add two columns on each model you're going to use `has_ratings`: `ratings_count` and `rating`
+
+3) Run `rails generate migration add_rating_to_MODEL` and add two columns on each model you're going to use `rating` and `ratings_count`.
 
 	class AddRatingToPhoto < ActiveRecord::Migration
 	  def self.up
-        add_column :photos, :ratings_count, :integer,
-		  :default => 0, :null => false
+      
+      add_column :photos, :ratings_count, :integer,
+        :default => 0, :null => false
 	
 	    add_column :photos, :rating, :float,
-		  :precision => 3, 
-		  :scale => 2,
-		  :default => 0,
-		  :null => false
+		    :precision => 3, 
+		    :scale => 2,
+		    :default => 0,
+		    :null => false
 
 	    add_index :photos, :rating
 	    add_index :photos, :ratings_count
@@ -70,8 +81,8 @@ Usage
 	  has_many :ratings
 	end
 
-	photo = Photo.find(:first)
-	user = User.find(:first)
+	photo = Photo.first
+	user = User.first
 
 	photo.rate(:user => user, :rating => 1) # => <rating>
 	photo.rated?(user) # => true
